@@ -1,0 +1,75 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package "backend"{
+
+   class TickTacToeGame {
+
+    - BOARD_SIZE : int
+    - board : int[boardSize][boardSize]
+
+    + run ()
+    + verifyWinner ()
+    + showWinner ()
+    + resetBoard ()
+   }
+
+   enum GameState {
+    GAMEPLAY,
+    GAME-OVER,
+    TIE
+   }
+
+   class Player {
+    - score : int
+    - isX : boolean
+    + placeXCharOnBoardPosition()
+    + placeOCharOnBoardPosition()
+   }
+}
+
+"frontend" ..> "backend"
+
+package "frontend" {
+
+    class GameWindow {
+
+    }
+    abstract class GamePanel {
+
+        - TILE_SIZE : int
+        - TILE_UPSCALE : int
+        - ULTIMATE_TILE_SIZE : int
+        - ASPECT_RATIO_X : int
+        - ASPECT_RATIO_Y : int
+        - PANEL_RESOLUTION_X : int
+        - PANEL_RESOLUTION_Y : int
+    }
+    class GamePlayPanel {
+
+    }
+    class GameOverPanel
+    class TiePanel
+}
+
+interface Runnable
+interface MouseListener
+class Thread
+
+TickTacToeGame --> GameState
+TickTacToeGame --u> Thread
+TickTacToeGame --> "2 " Player : players
+TickTacToeGame ..u|> Runnable
+
+
+GameWindow --> GamePanel
+GameWindow -u-|> JFrame
+GamePanel --|> JPanel
+GamePanel --> Graphics2D
+GamePanel ..|> MouseListener
+GamePlayPanel -u-|> GamePanel
+GamePlayPanel --> GameOverPanel
+GamePlayPanel --> TiePanel
+GameOverPanel -u-|> GamePanel
+TiePanel -u-|> GamePanel
+@enduml
